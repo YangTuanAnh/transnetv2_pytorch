@@ -33,6 +33,10 @@ jobs:
           flake8 transnetv2_pytorch --count --select=E9,F63,F7,F82 --show-source --statistics
           flake8 transnetv2_pytorch --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
+      - name: Test with pytest
+        run: |
+          pytest
+
       - name: Build Docker image (verify Dockerfile)
         run: |
           docker build -t transnetv2_pytorch .
