@@ -1,4 +1,4 @@
-# TransNetV2 PyTorch Inference (Batch)
+# TransNetV2 PyTorch Inference
 
 This script runs **scene boundary prediction** on a single video or a folder of multiple videos using the PyTorch implementation of [TransNetV2.](https://github.com/soCzech/TransNetV2)
 
@@ -16,44 +16,57 @@ source .venv/bin/activate
 pip install ffmpeg-python torch pillow
 ```
 
-Or use NVIDIA Docker:
+Install this tool as a package:
 ```sh
-# build
-docker build -t transnetv2_pytorch .
-
-# run on a folder
-docker run --rm --gpus all \
-  -v /my/local/videos:/data \
-  transnetv2_pytorch /data
+pip install -e .
 ```
 
-Make sure `transnetv2_infer.py` and
+Make sure `inference.py` and
 `transnetv2-pytorch-weights.pth` are in the same directory.
 
 ---
 
-## Usage
+## CLI Usage
 
 **Process a single video file**
 
 ```bash
-python transnetv2_infer.py --input /path/to/video.mp4
+transnetv2_pytorch /path/to/video.mp4
 ```
 
 **Process all videos in a directory**
 
 ```bash
-python transnetv2_infer.py --input /path/to/folder/
+transnetv2_pytorch /path/to/folder/
 ```
 
 **Also save visualizations**
 
 ```bash
-python transnetv2_infer.py --input /path/to/video_or_folder --visualize
+transnetv2_pytorch /path/to/video_or_folder --visualize
 ```
 
 ---
 
+## Docker Usage
+Build the container:
+```sh
+docker build -t transnetv2_pytorch .
+```
+
+Run on a directory of videos (GPU):
+```sh
+docker run --rm --gpus all \
+  -v /my/local/videos:/data \
+  transnetv2_pytorch /data
+```
+
+Run on a single video (CPU or GPU):
+```sh
+docker run --rm --gpus all \
+  -v /my/local/videos:/data \
+  transnetv2_pytorch /data/video1.mp4
+```
 ## Output (written next to the input video)
 
 | File                      | Description                                      |
