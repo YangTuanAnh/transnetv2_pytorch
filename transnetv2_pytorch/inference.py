@@ -133,10 +133,14 @@ def main():
 
     model = TransNetV2Torch()
 
-    # get list of files
+    video_ext = (".mp4", ".mkv", ".avi", ".mov", ".webm", ".flv")
+
     if os.path.isdir(args.input):
-        files = [os.path.join(args.input, f)
-                 for f in os.listdir(args.input)]
+        files = [
+            os.path.join(args.input, f)
+            for f in os.listdir(args.input)
+            if f.lower().endswith(video_ext)
+        ]
     else:
         files = [args.input]
 
