@@ -18,7 +18,8 @@ class TransNetV2Torch:
                                     'transnetv2-pytorch-weights.pth')
         self.model = TransNetV2()
         self.model.load_state_dict(torch.load(weights_path))
-        self.model = self.model.eval().cuda()
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.model = self.model.eval().to(self.device)
         self.window_buf = None
 
     @torch.no_grad()
@@ -41,7 +42,7 @@ class TransNetV2Torch:
         ptr = 0
         while ptr + 100 <= len(padded):
             self.window_buf[0] = padded[ptr:ptr + 100]
-            tensor_input = torch.from_numpy(self.window_buf).cuda()
+            tensor_input = torch.from_numpy(self.window_buf).to(self.device)
             l, mh = self.predict_raw(tensor_input)
             logits_list.append(l[0, 25:75, 0])
             manyhot_list.append(mh[0, 25:75, 0])

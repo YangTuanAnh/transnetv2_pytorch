@@ -10,7 +10,7 @@ This script runs **scene boundary prediction** on a single video or a folder of 
 * `Pillow`
 
 ```sh
-!pip install numpy python-ffmpeg tqdm torch pillow
+!pip install python-ffmpeg torch pillow
 ```
 
 Make sure `transnetv2_infer.py` and
