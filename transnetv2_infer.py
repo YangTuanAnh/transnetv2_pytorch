@@ -46,7 +46,12 @@ class TransNetV2Torch:
             l, mh = self.predict_raw(tensor_input)
             logits_list.append(l[0, 25:75, 0])
             manyhot_list.append(mh[0, 25:75, 0])
+
             ptr += 50
+            processed = min(ptr, total)
+            print(f"\r[TransNetV2] Processing video frames {processed}/{total}", end="")
+
+        print("")  # newline after bar
 
         logits = np.concatenate(logits_list, axis=0)[:total]
         manyhot = np.concatenate(manyhot_list, axis=0)[:total]
