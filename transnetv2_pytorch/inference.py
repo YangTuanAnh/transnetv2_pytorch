@@ -7,7 +7,7 @@ import torch
 import ffmpeg
 from tqdm import tqdm
 
-from transnetv2_pytorch import TransNetV2
+from transnetv2_pytorch.model import TransNetV2
 
 
 class TransNetV2Torch:
