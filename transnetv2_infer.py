@@ -125,8 +125,8 @@ class TransNetV2Torch:
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--input",  required=True,
-                        help="video file or directory containing videos")
+    parser.add_argument("input",
+                    help="video file or directory containing videos")
     parser.add_argument("--visualize", action="store_true",
                         help="also save <video>.vis.png")
     args = parser.parse_args()

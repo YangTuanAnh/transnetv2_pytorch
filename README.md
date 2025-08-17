@@ -10,9 +10,21 @@ This script runs **scene boundary prediction** on a single video or a folder of 
 * `Pillow`
 
 ```sh
+apt-get install ffmpeg
 python -m venv .venv
 source .venv/bin/activate
 pip install ffmpeg-python torch pillow
+```
+
+Or use NVIDIA Docker:
+```sh
+# build
+docker build -t transnetv2_pytorch .
+
+# run on a folder
+docker run --rm --gpus all \
+  -v /my/local/videos:/data \
+  transnetv2_pytorch /data
 ```
 
 Make sure `transnetv2_infer.py` and
