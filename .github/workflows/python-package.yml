@@ -1,0 +1,42 @@
+name: Python package (TransNetV2 PyTorch)
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.9", "3.10", "3.11"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install flake8 pytest
+          python -m pip install -e .  # install this package
+
+      - name: Lint with flake8
+        run: |
+          flake8 transnetv2_pytorch --count --select=E9,F63,F7,F82 --show-source --statistics
+          flake8 transnetv2_pytorch --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
+      - name: Test with pytest
+        run: |
+          pytest
+
+      - name: Build Docker image (verify Dockerfile)
+        run: |
+          docker build -t transnetv2_pytorch .
