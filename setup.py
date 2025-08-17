@@ -15,6 +15,8 @@ setup(
             "transnetv2_pytorch=transnetv2_pytorch.transnetv2_infer:main"
         ]
     },
-    author="",
+    packages=["transnetv2_pytorch"],
+    package_dir={"transnetv2_pytorch": "."},
+    author="YangTuanAnh",
     description="PyTorch inference script for TransNetV2 (scene detection)",
 )
