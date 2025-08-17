@@ -12,11 +12,9 @@ setup(
     # ],
     entry_points={
         "console_scripts": [
-            "transnetv2_pytorch=transnetv2_pytorch.transnetv2_infer:main"
+            "transnetv2_pytorch=transnetv2_pytorch.inference:main"
         ]
     },
-    packages=["transnetv2_pytorch"],
-    package_dir={"transnetv2_pytorch": "."},
     author="YangTuanAnh",
     description="PyTorch inference script for TransNetV2 (scene detection)",
 )
