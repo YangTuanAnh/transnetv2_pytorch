@@ -22,15 +22,10 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Install system dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y ffmpeg
-
-      - name: Install pip dependencies
+      - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install flake8 pytest ffmpeg-python torch pillow
+          python -m pip install flake8 pytest
           python -m pip install -e .  # install this package
 
       - name: Lint with flake8
