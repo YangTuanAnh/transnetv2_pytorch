@@ -58,13 +58,10 @@ class TransNetV2Torch:
 
     def predict_video(self, video_path: str):
         print(f"[TransNetV2] Extracting frames from {os.path.basename(video_path)}")
-        video_stream, _ = (
-            ffmpeg
-            .input(video_path)
-            .output("pipe:", format="rawvideo",
-                    pix_fmt="rgb24", s="48x27")
-            .run(capture_stdout=True, capture_stderr=True)
-        )
+        video_stream, _ = ffmpeg.input(video_path).output(
+            "pipe:", format="rawvideo", pix_fmt="rgb24", s="48x27"
+        ).run(capture_stdout=True, capture_stderr=True)
+
         frames = np.frombuffer(video_stream, np.uint8).reshape([-1, 27, 48, 3])
         return frames, *self.predict_frames(frames)
 
