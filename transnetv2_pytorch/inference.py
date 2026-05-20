@@ -127,6 +127,12 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("input",
                     help="video file or directory containing videos")
+    parser.add_argument(
+        "--output",
+        "-o",
+        default=None,
+        help="output file or directory path"
+    )
     parser.add_argument("--visualize", action="store_true",
                         help="also save <video>.vis.png")
     args = parser.parse_args()
@@ -144,12 +150,30 @@ def main():
     else:
         files = [args.input]
 
+    if args.output and len(files) > 1:
+        os.makedirs(args.output, exist_ok=True)
+
     pbar = tqdm(files)
     for fp in pbar:
         pbar.set_description(os.path.basename(fp))
 
-        pred_txt = fp + ".predictions.txt"
-        scenes_txt = fp + ".scenes.txt"
+        base_name = os.path.splitext(os.path.basename(fp))[0]
+
+        if args.output:
+            if len(files) > 1:
+                out_base = os.path.join(args.output, base_name)
+            else:
+                # single file mode
+                if os.path.isdir(args.output):
+                    os.makedirs(args.output, exist_ok=True)
+                    out_base = os.path.join(args.output, base_name)
+                else:
+                    out_base = os.path.splitext(args.output)[0]
+        else:
+            out_base = fp
+
+        pred_txt = out_base + ".predictions.txt"
+        scenes_txt = out_base + ".scenes.txt"
 
         if os.path.exists(pred_txt) or os.path.exists(scenes_txt):
             print(f"[SKIP] {fp} already processed. Skipping.", file=sys.stderr)
@@ -159,13 +183,15 @@ def main():
 
         pred_arr = np.stack([s_pred, a_pred], axis=1)
         np.savetxt(pred_txt, pred_arr, fmt="%.6f")
+
         scenes = model.predictions_to_scenes(s_pred)
         np.savetxt(scenes_txt, scenes, fmt="%d")
 
         if args.visualize:
             vis_img = model.visualize_predictions(
-                frames, predictions=(s_pred, a_pred))
-            vis_img.save(fp + ".vis.png")
+                frames, predictions=(s_pred, a_pred)
+            )
+            vis_img.save(out_base + ".vis.png")
 
 
 if __name__ == "__main__":
