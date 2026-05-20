@@ -40,6 +40,12 @@ transnetv2_pytorch /path/to/video.mp4
 transnetv2_pytorch /path/to/folder/
 ```
 
+**Process all videos in a directory to a different folder**
+
+```bash
+transnetv2_pytorch /path/to/folder/ -o /path/to/other_folder/
+```
+
 **Also save visualizations**
 
 ```bash
